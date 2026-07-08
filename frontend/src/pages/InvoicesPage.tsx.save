@@ -1,0 +1,169 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+type Invoice = {
+  id: number;
+  customer_id: number;
+  total_amount: string;
+  status: string;
+  created_at: string;
+};
+
+export default function InvoicesPage() {
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [productId, setProductId] = useState("");
+  const [quantity, setQuantity] = useState("");
+
+  useEffect(() => {
+    loadInvoices();
+  }, []);
+
+  const loadInvoices = () => {
+    axios
+      .get("http://localhost:3000/api/invoices/1")
+      .then((res) => setInvoices(res.data))
+      .catch((err) => console.error(err));
+  };
+
+  const createInvoice = () => {
+    axios
+      .post("http://localhost:3000/api/invoices", {
+        tenant_id: 1,
+        customer_id: 1,
+        items: [
+          {
+            product_id: Number(productId),
+            quantity: Number(quantity),
+          },
+        ],
+      })
+      .then(() => {
+        alert("Invoice created successfully");
+        setProductId("");
+        setQuantity("");
+        loadInvoices();
+      })
+      .catch((err) => console.error(err));
+  };
+
+  return (
+    <div
+      style={{
+        padding: "20px",
+        background: "#f5f7fb",
+        minHeight: "100vh",
+      }}
+    >
+      <h1>Invoices</h1>
+
+      {/* Create Invoice Form */}
+      <div
+        style={{
+          background: "white",
+          padding: "20px",
+          borderRadius: "10px",
+          marginBottom: "20px",
+        }}
+      >
+        <h2>Create Invoice</h2>
+
+        <input
+          placeholder="Product ID"
+          value={productId}
+          onChange={(e) => setProductId(e.target.value)}
+          style={{
+            padding: "10px",
+            marginRight: "10px",
+          }}
+        />
+
+        <input
+          placeholder="Quantity"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          style={{
+            padding: "10px",
+            marginRight: "10px",
+          }}
+        />
+
+        <button
+          onClick={createInvoice}
+          style={{
+            padding: "10px 20px",
+            background: "#2563eb",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          Create Invoice
+        </button>
+      </div>
+
+
+      {/* Invoice Table */}
+      <div
+        style={{
+          background: "white",
+          padding: "20px",
+          borderRadius: "10px",
+        }}
+      >
+        <h2>Invoice List</h2>
+
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+          }}
+        >
+          <thead>
+            <tr>
+              <th style={cellStyle}>Invoice ID</th>
+              <th style={cellStyle}>Customer ID</th>
+              <th style={cellStyle}>Amount</th>
+              <th style={cellStyle}>Status</th>
+              <th style={cellStyle}>Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {invoices.map((invoice) => (
+              <tr key={invoice.id}>
+                <td style={cellStyle}>
+                  {invoice.id}
+                </td>
+
+                <td style={cellStyle}>
+                  {invoice.customer_id}
+                </td>
+
+                <td style={cellStyle}>
+                  ₹{invoice.total_amount}
+                </td>
+
+                <td style={cellStyle}>
+                  {invoice.status}
+                </td>
+
+                <td style={cellStyle}>
+                  {new Date(invoice.created_at).toLocaleDateString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  );
+}
+
+
+const cellStyle = {
+  border: "1px solid #ddd",
+  padding: "8px",
+};o
+

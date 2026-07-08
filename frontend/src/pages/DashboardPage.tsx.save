@@ -1,0 +1,41 @@
+  GNU nano 7.2                                                          /home/dinesh/business-os/frontend/src/App.tsx                                                                   
+import { useEffect, useState } from "react";
+import axios from "axios";
+import DashboardCard from "./DashboardCard";
+
+export default function App() {
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/dashboard/1")
+      .then((res) => setData(res.data));
+  }, []);
+
+  if (!data) return <h2>Loading...</h2>;
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Business OS Dashboard</h1>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          gap: "16px",
+          marginTop: "20px",
+        }}
+      >
+        <DashboardCard title="Employees" value={data.employees} />
+        <DashboardCard title="Products" value={data.products} />
+        <DashboardCard title="Customers" value={data.customers} />
+        <DashboardCard
+          title="Total Sales"
+          value={`₹${data.sales.total_sales}`}
+        />
+      </div>
+    </div>
+  );
+}
+
+
