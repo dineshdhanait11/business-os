@@ -15,6 +15,7 @@ import InvoicesPage from "./pages/InvoicesPage";
 import ReportsPage from "./pages/ReportsPage";
 
 
+
 function ProtectedRoute({children}:any){
 
 const {token}=useAuth();
@@ -33,6 +34,7 @@ return children;
 
 
 
+
 export default function App(){
 
 
@@ -40,7 +42,7 @@ return (
 
 <AuthProvider>
 
-<BrowserRouter>
+<BrowserRouter basename="/business-os">
 
 
 <Routes>
@@ -50,6 +52,7 @@ return (
 path="/login"
 element={<LoginPage/>}
 />
+
 
 
 <Route
