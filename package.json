@@ -1,0 +1,25 @@
+{
+  "name": "business-os",
+  "version": "1.0.0",
+  "description": "Full-stack Business OS application managed under a single repository",
+  "main": "index.js",
+  "scripts": {
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dineshdhanait11/business-os.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dineshdhanait11/business-os/issues"
+  },
+  "homepage": "https://github.com/dineshdhanait11/business-os#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}
